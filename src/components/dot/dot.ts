@@ -31,7 +31,7 @@ export class Dot extends BaseComponent {
       className: ['timer'],
       parent: this.element,
     });
-    gameService.time$$.subscribe(this.showTime);
+    gameService.activeScore$$.subscribe(this.showTime);
     this.click$ = fromEvent(this.element, 'click').pipe(
       tap(this.onDotClick),
       switchMap(this.timerOnClick),

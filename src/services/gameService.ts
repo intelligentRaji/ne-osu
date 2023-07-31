@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 
 class GameService {
   private timeToClick = TIME_TO_CLICK;
-  public readonly time$$ = new BehaviorSubject(DEFAULT_TIME);
+  public readonly activeScore$$ = new BehaviorSubject(DEFAULT_TIME);
   public readonly score$$ = new BehaviorSubject(DEFAULT_COUNT);
 
   public getTimeToClick(): number {
@@ -15,18 +15,18 @@ class GameService {
   }
 
   public updateScore(): void {
-    const score = this.score$$.getValue() + this.time$$.getValue();
+    const score = this.score$$.getValue() + this.activeScore$$.getValue();
     this.score$$.next(score);
   }
 
   public reset(): void {
     this.score$$.next(DEFAULT_COUNT);
-    this.time$$.next(TIME_TO_CLICK);
+    this.activeScore$$.next(TIME_TO_CLICK);
     this.timeToClick = TIME_TO_CLICK;
   }
 
   public updateTime = (time: number): void => {
-    this.time$$.next(time);
+    this.activeScore$$.next(time);
   };
 }
 
