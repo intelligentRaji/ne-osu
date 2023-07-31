@@ -1,0 +1,40 @@
+.dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid #ffffff;
+  font-size: 30px;
+  text-align: center;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: dot-animation 1s ease-in-out 0s infinite alternate none;
+  transition-timing-function: cubic-bezier(0, 0.98, 0.14, 0.98);
+  user-select: none;
+  z-index: 100000;
+}
+
+.echo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  z-index: 100;
+}
+
+@keyframes dot-animation {
+  0% {
+    transform: scale(1) translate(-50%, -50%);
+  }
+
+  100% {
+    transform: scale(0.98) translate(-50%, -50%);
+  }
+}
