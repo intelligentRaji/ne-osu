@@ -11,7 +11,7 @@ import {
 } from 'rxjs';
 import { getRandomNumber } from '@/utils/getRandomNumber';
 import { gameService } from '@/services/gameService';
-import { TIME_TO_CLICK } from '@/consts/consts';
+import { SCORE_DOWN_INTERVAL, START_SCORE_ON_CLICK } from '@/consts/consts';
 import { store } from '@/redux/store';
 import { changeGameStatus } from '@/redux/actions/changeGameStatus';
 import { StatusTypes } from '@/consts/enums/statusTypes';
@@ -36,7 +36,7 @@ export class Dot extends BaseComponent {
       tap(this.onDotClick),
       switchMap(this.timerOnClick),
       map((value) => value + 1),
-      takeWhile((value) => value <= gameService.getTimeToClick()),
+      takeWhile((value) => value <= START_SCORE_ON_CLICK),
       finalize(this.lose),
     );
     this.subscribeStore();
@@ -51,7 +51,7 @@ export class Dot extends BaseComponent {
       { once: true },
     );
     this.click$.subscribe((count) => {
-      gameService.updateTime(gameService.getTimeToClick() - count);
+      gameService.updateTime(START_SCORE_ON_CLICK - count);
     });
     this.element.removeAttribute('style');
     this.timer.setTextContent('Click');
@@ -73,7 +73,7 @@ export class Dot extends BaseComponent {
 
   private onDotClick = (): void => {
     gameService.updateScore();
-    this.showTime(TIME_TO_CLICK);
+    this.showTime(START_SCORE_ON_CLICK);
     this.moveDot();
     this.notify.emit(CustomEvents.dotClick, this.getDOMRect());
   };
@@ -83,12 +83,15 @@ export class Dot extends BaseComponent {
   };
 
   private timerOnClick = (): Observable<number> => {
-    const interval$ = interval(600);
+    const interval$ = interval(SCORE_DOWN_INTERVAL);
     return interval$;
   };
 
   private moveDot = (): void => {
-    this.stylize('transitionDuration', `${gameService.getTimeToClick()}s`);
+    this.stylize(
+      'transitionDuration',
+      `${(START_SCORE_ON_CLICK * SCORE_DOWN_INTERVAL) / 1000}s`,
+    );
     this.stylize('top', `${getRandomNumber(0, 100)}%`);
     this.stylize('left', `${getRandomNumber(0, 100)}%`);
   };

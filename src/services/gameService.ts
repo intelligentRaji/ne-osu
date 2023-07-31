@@ -1,18 +1,15 @@
-import { DEFAULT_COUNT, DEFAULT_TIME, TIME_TO_CLICK } from '@/consts/consts';
+import {
+  DEFAULT_LIFE_PROGRESS,
+  DEFAULT_SCORE,
+  START_SCORE_ON_CLICK,
+} from '@/consts/consts';
 import { BehaviorSubject } from 'rxjs';
 
 class GameService {
-  private timeToClick = TIME_TO_CLICK;
-  public readonly activeScore$$ = new BehaviorSubject(DEFAULT_TIME);
-  public readonly score$$ = new BehaviorSubject(DEFAULT_COUNT);
-
-  public getTimeToClick(): number {
-    return this.timeToClick;
-  }
-
-  public updateTimeToClick(time: number): void {
-    this.timeToClick = time;
-  }
+  private readonly lifeProgress$$ = new BehaviorSubject(DEFAULT_LIFE_PROGRESS);
+  public readonly activeScore$$ = new BehaviorSubject(START_SCORE_ON_CLICK);
+  public readonly score$$ = new BehaviorSubject(DEFAULT_SCORE);
+  public lifeProgress$ = this.lifeProgress$$.pipe();
 
   public updateScore(): void {
     const score = this.score$$.getValue() + this.activeScore$$.getValue();
@@ -20,9 +17,8 @@ class GameService {
   }
 
   public reset(): void {
-    this.score$$.next(DEFAULT_COUNT);
-    this.activeScore$$.next(TIME_TO_CLICK);
-    this.timeToClick = TIME_TO_CLICK;
+    this.score$$.next(DEFAULT_SCORE);
+    this.activeScore$$.next(START_SCORE_ON_CLICK);
   }
 
   public updateTime = (time: number): void => {
